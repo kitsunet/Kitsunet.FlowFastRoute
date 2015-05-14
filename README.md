@@ -13,3 +13,23 @@ Also handlers given to the FastRoute routes NEED to be callables currently, so i
 * \TYPO3\Flow\Http\Response instance, you can fill this and it will be send afterwards
 * \TYPO3\Flow\Http\Request instance, to use further.
 
+
+The file with the FastRoutes should be in /Configuration/FastRoutes.php and a default should be created if you install this package via composer.
+
+## Example
+
+Route in FastRoutes.php:
+    
+    <?php
+    
+    $dispatcher = \FastRoute\simpleDispatcher(function (\FastRoute\RouteCollector $r) {
+        $r->addRoute('GET', '/hello/{name}', function($arguments, $bootstrap, $response, $request) {
+            /** @var \TYPO3\Flow\Http\Response $response */
+            $response->setContent('Hello ' . $arguments['name'] . '!');
+        });
+    });
+    
+    // This is necessary to give control to the Flow RequestHandler.
+    return $dispatcher;
+
+**Warning: This example might be XSS vulnerable, it is just to show the usage.**
